@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="description" content="">
+   <meta name="author" content="">
+   <link rel="icon" href="../../favicon.ico">
+
+
+      <title>Smart Hotels</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+      <!-- Custom styles for this template -->
+      <link href="../static/css/starter-template.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+      <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+      <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+      <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+      <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+      <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
+      <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+      <style>
+   body  {
+     background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
+     /* background-image: linear-gradient(to top, #fad0c4 0%, #ffd1ff 100%); */
+     /* background-blend-mode: lighten; */
+   }
+   </style>
+
+   <!-- Bootstrap core CSS -->
+   <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+   <!-- Custom styles for this template -->
+   <link href="../static/css/starter-template.css" rel="stylesheet">
+
+   <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+   <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+   <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+   <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
+   <link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.css" type="text/css" />
+   <link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.css" type="text/css" />
+   <link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-tables-1.0.4.min.css" type="text/css">
+
+   <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.js"></script>
+   <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-api-1.0.4.min.js"></script>
+   <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.js"></script>
+   <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-tables-1.0.4.min.js"></script>
+   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+   <!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+   <![endif]-->
+ </head>
+
+ <body>
+
+   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+     <div class="container">
+       <div class="navbar-header">
+         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+           <span class="sr-only">Toggle navigation</span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </button>
+         <a class="navbar-brand" href="/index">Smart Hotels</a>
+       </div>
+       <div class="collapse navbar-collapse">
+         <ul class="nav navbar-nav">
+           <li class="active"><a href="/index">Home</a></li>
+           <li><a href="/about">About</a></li>
+           <li><a href="https://www.linkedin.com/in/argha-mondal/"> Contact</a></li>
+           <li><a href="/slides"> Slides</a></li>
+         </ul>
+       </div><!--/.nav-collapse -->
+     </div>
+   </div>
+<br><br>
+<div class="container">
+  <div class="jumbotron" style="background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)">
+    <h1 class="display-4">  Smart Hotels</h1>
+    <p class="lead"> Analyzing customer reviews to suggest hotel
+      improvements
+    </p>
+</div>
+</div>
+
+<div class="container">
+{{ script|safe }}
+{{ div|safe }}
+</div>
+   <!-- Bootstrap core JavaScript
+   ================================================== -->
+   <!-- Placed at the end of the document so the pages load faster -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+
+   </body>
+</html>
