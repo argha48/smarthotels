@@ -46,7 +46,7 @@ import warnings
 warnings.filterwarnings("ignore",category=DeprecationWarning)
 
 
-alldata = pd.read_json('./src/demo_data.json',orient='columns',encoding='utf-8')
+alldata = pd.read_json('./src/minidemo.json',orient='columns',encoding='utf-8')
 star_score_df = pd.read_json('./src/hotel_star_scores.json',encoding='utf-8')
 mallet_lda_topics={
                 0:'Hotel Staff',
@@ -66,168 +66,168 @@ mallet_lda_topics={
                 14:'Parking Facility'
             }
 
+#
+# def get_text(rev):
+#     if pd.DataFrame(rev).empty:
+#         return ''
+#     else:
+#         return rev[0] if str(rev)!='nan' else ''
+#
+# def review_cleaned(review_df):
+#     df = review_df[['HotelName','PositiveReview','NegativeReview','StayDate']].copy()#.applymap(get_text)
+#     df['FullReview'] = [pos+' '+neg for pos,neg in zip(df['PositiveReview'],df['NegativeReview'])]
+# #     df['StayDate'] = df['StayDate'].apply(lambda x: x.replace('\n','')).apply(lambda x: x.replace('Stayed in ',''))
+#     return df
+#
+# def review_to_sentence(df):
+#     all_sentences = []
+#     from nltk.tokenize import sent_tokenize
+#     import pandas as pd
+#     allreview = df['FullReview']
+#     for areview in allreview:
+#         all_sentences.extend(sent_tokenize(areview))
+#     tokensentence = pd.DataFrame(data=all_sentences,columns=['TokenSentence'])
+#     return tokensentence
+#
+# def sentence_sentiment(text):
+#     from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+#     analyzer = SentimentIntensityAnalyzer()
+#     compound_sentiment = analyzer.polarity_scores(text)['compound']
+#     return compound_sentiment
+#
+# def token_to_sentiment(df):
+#     df['CompoundSentiment'] = df['TokenSentence'].apply(sentence_sentiment)
+#     return df
+#
+# # helper functions for text preprocessing & LDA modeling:
+#
+# def punct_space(token):
+#     """
+#     helper function to eliminate tokens
+#     that are pure punctuation or whitespace
+#     """
+#
+#     return token.is_punct or token.is_space or token.like_num or token.is_digit
+#
+# def line_review(filename):
+#     """
+#     generator function to read in reviews from Pandas Series
+#     and un-escape the original line breaks in the text
+#     """
+#
+#     #with codecs.open(filename, encoding='utf_8') as f:
+#     for review in filename:
+#         yield review.replace('\\n', '\n')
+#
+# def lemmatized_sentence_corpus(filename):
+#     """
+#     generator function to use spaCy to parse reviews,
+#     lemmatize the text, and yield sentences
+#     """
+#
+#     for parsed_review in nlp.pipe(line_review(filename), batch_size=10000, n_threads=10):
+#         for sent in parsed_review.sents:
+#             yield u' '.join([token.lemma_ for token in sent
+#                              if not punct_space(token)])
+#
+# def trigram_bow_generator(filepath):
+#     """
+#     generator function to read reviews from a file
+#     and yield a bag-of-words representation
+#     """
+#     # load finished dictionary from disk
+#     trigram_dictionary = Dictionary.load('./src/saved_model/models2/trigram_dict_all.dict')
+#
+#     for review in LineSentence(filepath):
+#         yield trigram_dictionary.doc2bow(review)
+#
+# def nCPU():
+#     import multiprocessing
+#     N = multiprocessing.cpu_count()-1
+#     return N
+#
+# def topic_extractor(df, min_topic_freq=0.10):
+#     from tqdm import tqdm
+#     from operator import itemgetter
+#     ncpu = nCPU()
+#     dfc=df.copy()
+#     text = dfc['TokenSentence'].copy()
+#     trigram_dictionary = Dictionary.load('./src/saved_model/models2/trigram_dict_all.dict')
+#     lda = LdaMulticore.load('./src/saved_model/models2/mallet_lda_model')
+#     # trigram_review = LineSentence('./tri_temporary.txt')
+#     bigram_model = Phrases.load('./src/saved_model/models2/bigram_model.txt')
+#     trigram_model = Phrases.load('./src/saved_model/models2/trigram_model.txt')
+#     topic_list = []
+#     trigram_list = []
+#     freq_list = []
+#     # parse the review text with spaCy
+#     for parsed_review in tqdm(nlp.pipe(line_review(text),
+#                                     batch_size=10000, n_threads=ncpu)):
+#         # lemmatize the text, removing punctuation and whitespace
+#         unigram_review = [token.lemma_ for token in parsed_review
+#                             if not punct_space(token)]
+#         # apply the first-order and second-order phrase models
+#         bigram_review = bigram_model[unigram_review]
+#         trigram_review = trigram_model[bigram_review]
+#
+#         common_terms = ['-PRON-','hotel'] #'service',
+#         # remove any remaining stopwords
+#         trigram_review = [term for term in trigram_review
+#                             if term not in spacy.lang.en.stop_words.STOP_WORDS]
+#         trigram_review = [term for term in trigram_review
+#                             if term not in common_terms]
+#         if len(trigram_review)==0:
+#             topic_number=-1
+#             freq = 0.0
+#             tri = str([])
+#         else:
+#             # create a bag-of-words representation
+#             review_bow = trigram_dictionary.doc2bow(trigram_review)
+#             # create an LDA representation
+#             review_lda = lda.get_document_topics(review_bow)
+#             # print the most highly related topic name and frequency
+#             review_lda = sorted(review_lda, key=itemgetter(1),reverse=True)[0]
+#             topic_number = review_lda[0]
+#             freq = review_lda[1]
+#             if freq < min_topic_freq:
+#                 topic_number=-1
+#                 freq = 0.0
+#
+#         topic_list.append(topic_number)
+#         freq_list.append(round(freq,2))
+#         trigram_list.append(trigram_review)
+#     dfc['Topic']=topic_list
+#     dfc['TopicFrequency']=freq_list
+#     dfc['Trigram']=trigram_list
+#     return dfc
+#
+# def topic_scorer(df):
+#     xdf = pd.get_dummies(df,prefix='Topic',
+#                      prefix_sep='_', dummy_na=False,
+#                      columns=['Topic'])
+#     topics = ['Topic_0', 'Topic_1', 'Topic_2','Topic_3',
+#               'Topic_4', 'Topic_5', 'Topic_6', 'Topic_7',
+#               'Topic_8','Topic_9', 'Topic_10', 'Topic_11',
+#               'Topic_12', 'Topic_13','Topic_14']
+#     topic_dict = {}
+#     for atopic in topics:
+#         if atopic in xdf.columns.values:
+#             xdf[atopic] = xdf[atopic] * xdf['CompoundSentiment']
+#             m = np.mean(list(filter(lambda a: a != 0, xdf[atopic])))
+#             topic_dict[mallet_lda_topics[int(atopic.replace('Topic_',''))]] = round(m,2)
+#         else:
+#             topic_dict[mallet_lda_topics[int(atopic.replace('Topic_',''))]] = 'No information available'
+#     return topic_dict
 
-def get_text(rev):
-    if pd.DataFrame(rev).empty:
-        return ''
-    else:
-        return rev[0] if str(rev)!='nan' else ''
-
-def review_cleaned(review_df):
-    df = review_df[['HotelName','PositiveReview','NegativeReview','StayDate']].copy()#.applymap(get_text)
-    df['FullReview'] = [pos+' '+neg for pos,neg in zip(df['PositiveReview'],df['NegativeReview'])]
-#     df['StayDate'] = df['StayDate'].apply(lambda x: x.replace('\n','')).apply(lambda x: x.replace('Stayed in ',''))
-    return df
-
-def review_to_sentence(df):
-    all_sentences = []
-    from nltk.tokenize import sent_tokenize
-    import pandas as pd
-    allreview = df['FullReview']
-    for areview in allreview:
-        all_sentences.extend(sent_tokenize(areview))
-    tokensentence = pd.DataFrame(data=all_sentences,columns=['TokenSentence'])
-    return tokensentence
-
-def sentence_sentiment(text):
-    from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-    analyzer = SentimentIntensityAnalyzer()
-    compound_sentiment = analyzer.polarity_scores(text)['compound']
-    return compound_sentiment
-
-def token_to_sentiment(df):
-    df['CompoundSentiment'] = df['TokenSentence'].apply(sentence_sentiment)
-    return df
-
-# helper functions for text preprocessing & LDA modeling:
-
-def punct_space(token):
-    """
-    helper function to eliminate tokens
-    that are pure punctuation or whitespace
-    """
-
-    return token.is_punct or token.is_space or token.like_num or token.is_digit
-
-def line_review(filename):
-    """
-    generator function to read in reviews from Pandas Series
-    and un-escape the original line breaks in the text
-    """
-
-    #with codecs.open(filename, encoding='utf_8') as f:
-    for review in filename:
-        yield review.replace('\\n', '\n')
-
-def lemmatized_sentence_corpus(filename):
-    """
-    generator function to use spaCy to parse reviews,
-    lemmatize the text, and yield sentences
-    """
-
-    for parsed_review in nlp.pipe(line_review(filename), batch_size=10000, n_threads=10):
-        for sent in parsed_review.sents:
-            yield u' '.join([token.lemma_ for token in sent
-                             if not punct_space(token)])
-
-def trigram_bow_generator(filepath):
-    """
-    generator function to read reviews from a file
-    and yield a bag-of-words representation
-    """
-    # load finished dictionary from disk
-    trigram_dictionary = Dictionary.load('./src/saved_model/models2/trigram_dict_all.dict')
-
-    for review in LineSentence(filepath):
-        yield trigram_dictionary.doc2bow(review)
-
-def nCPU():
-    import multiprocessing
-    N = multiprocessing.cpu_count()-1
-    return N
-
-def topic_extractor(df, min_topic_freq=0.10):
-    from tqdm import tqdm
-    from operator import itemgetter
-    ncpu = nCPU()
-    dfc=df.copy()
-    text = dfc['TokenSentence'].copy()
-    trigram_dictionary = Dictionary.load('./src/saved_model/models2/trigram_dict_all.dict')
-    lda = LdaMulticore.load('./src/saved_model/models2/mallet_lda_model')
-    # trigram_review = LineSentence('./tri_temporary.txt')
-    bigram_model = Phrases.load('./src/saved_model/models2/bigram_model.txt')
-    trigram_model = Phrases.load('./src/saved_model/models2/trigram_model.txt')
-    topic_list = []
-    trigram_list = []
-    freq_list = []
-    # parse the review text with spaCy
-    for parsed_review in tqdm(nlp.pipe(line_review(text),
-                                    batch_size=10000, n_threads=ncpu)):
-        # lemmatize the text, removing punctuation and whitespace
-        unigram_review = [token.lemma_ for token in parsed_review
-                            if not punct_space(token)]
-        # apply the first-order and second-order phrase models
-        bigram_review = bigram_model[unigram_review]
-        trigram_review = trigram_model[bigram_review]
-
-        common_terms = ['-PRON-','hotel'] #'service',
-        # remove any remaining stopwords
-        trigram_review = [term for term in trigram_review
-                            if term not in spacy.lang.en.stop_words.STOP_WORDS]
-        trigram_review = [term for term in trigram_review
-                            if term not in common_terms]
-        if len(trigram_review)==0:
-            topic_number=-1
-            freq = 0.0
-            tri = str([])
-        else:
-            # create a bag-of-words representation
-            review_bow = trigram_dictionary.doc2bow(trigram_review)
-            # create an LDA representation
-            review_lda = lda.get_document_topics(review_bow)
-            # print the most highly related topic name and frequency
-            review_lda = sorted(review_lda, key=itemgetter(1),reverse=True)[0]
-            topic_number = review_lda[0]
-            freq = review_lda[1]
-            if freq < min_topic_freq:
-                topic_number=-1
-                freq = 0.0
-
-        topic_list.append(topic_number)
-        freq_list.append(round(freq,2))
-        trigram_list.append(trigram_review)
-    dfc['Topic']=topic_list
-    dfc['TopicFrequency']=freq_list
-    dfc['Trigram']=trigram_list
-    return dfc
-
-def topic_scorer(df):
-    xdf = pd.get_dummies(df,prefix='Topic',
-                     prefix_sep='_', dummy_na=False,
-                     columns=['Topic'])
-    topics = ['Topic_0', 'Topic_1', 'Topic_2','Topic_3',
-              'Topic_4', 'Topic_5', 'Topic_6', 'Topic_7',
-              'Topic_8','Topic_9', 'Topic_10', 'Topic_11',
-              'Topic_12', 'Topic_13','Topic_14']
-    topic_dict = {}
-    for atopic in topics:
-        if atopic in xdf.columns.values:
-            xdf[atopic] = xdf[atopic] * xdf['CompoundSentiment']
-            m = np.mean(list(filter(lambda a: a != 0, xdf[atopic])))
-            topic_dict[mallet_lda_topics[int(atopic.replace('Topic_',''))]] = round(m,2)
-        else:
-            topic_dict[mallet_lda_topics[int(atopic.replace('Topic_',''))]] = 'No information available'
-    return topic_dict
-
-def demo_(hotel_name):
-    new_doc = alldata[alldata['HotelName']==hotel_name]
-    # print(new_doc.shape)
-    text = review_cleaned(new_doc)
-    tokensentence = review_to_sentence(text)
-    sentencesentiment = token_to_sentiment(tokensentence)
-    topicdf = topic_extractor(sentencesentiment)
-    topic_dict = topic_scorer(topicdf)
-    return [(key,int(100*topic_dict[key])) for key in topic_dict]
+# def demo_(hotel_name):
+#     new_doc = alldata[alldata['HotelName']==hotel_name]
+#     # print(new_doc.shape)
+#     text = review_cleaned(new_doc)
+#     tokensentence = review_to_sentence(text)
+#     sentencesentiment = token_to_sentiment(tokensentence)
+#     topicdf = topic_extractor(sentencesentiment)
+#     topic_dict = topic_scorer(topicdf)
+#     return [(key,int(100*topic_dict[key])) for key in topic_dict]
 
 def score_compare(hotel_name, hotel_star):
     topics = ['Topic_0', 'Topic_1', 'Topic_2','Topic_3',

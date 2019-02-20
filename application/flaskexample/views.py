@@ -8,7 +8,7 @@ from src.demo import *
 @app.route('/index')
 def index():
     # alldata = pd.read_json('./src/ahotel.json', orient='columns',encoding='utf-8')
-    alldata = pd.read_json('./src/demo_data.json',orient='columns',encoding='utf-8')
+    alldata = pd.read_json('./src/minidemo.json',orient='columns',encoding='utf-8')
     def get_text(rev):
         return rev[0] if str(rev)!='nan' else ''
     dfc = alldata[['HotelName']].copy()
