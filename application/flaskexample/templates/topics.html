@@ -1,3 +1,19 @@
+<!-- #############################################################
+#	Copyright (C) 2019  Argha Mondal
+#	This program is free software: you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation, either version 3 of the License, or
+#	any later version.
+#
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+############################################################# -->
+
 <!DOCTYPE html>
 <html lang="en">
  <head>
@@ -67,61 +83,68 @@ body  {
     <p class="lead"> Analyzing customer reviews to suggest hotel
       improvements
     </p>
-  <hr class="my-4">
-  <p>Will it really?</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-  </p>
+    <hr class="my-4">
+    <p>Here we can see the list of topics customers have mentioned about Hotel:
+      <a class="btn btn-primary btn-lg" href="#" role="button">{{data[-1][1]}}</a>
+    . At the same time you can see a comparison of our mean
+    sentiment score for individual topics with all
+    <a class="btn btn-primary btn-lg" href="#" role="button">"{{data[-1][2]}}-star"</a> rated hotels. </p>
+
 </div>
 </div>
-   <div class="container">
-     <form method="POST" action="topics_details">
-       <div class="row">
-       <div class="col-sm">
-       <div class="btn-group-vertical">
-         {% for data in data %}
-         {% if data[1] > data[2] %}
-         <h1><button type="submit" class="btn btn-success" value="{{data[0]}}" name="atopic">
-           {{data[0]}} <span class="badge badge-light" >{{data[1]}}</span>
-         </button></h1>
-         {% endif %}
-         {% endfor %}
-       </div>
-     </div>
-         <div class="col-sm">
-           <div class="btn-group-vertical">
-           {% for data in data %}
-           {% if data[1] < data[2] %}
-           <h1><button type="submit" class="btn btn-danger" value="{{data[0]}}" name="atopic">
-             {{data[0]}} <span class="badge badge-light" >{{data[1]}}</span>
-           </button></h1>
-           {% endif %}
-           {% endfor %}
-         </div>
-       </div>
-      </div>
-<!--
-       {% for data in data %}
-       {% if data[1] > data[2] %}
-       <h1><button type="submit" class="btn btn-success" value="{{data[0]}}" name="atopic">
-         {{data[0]}} <span class="badge badge-light" >{{data[1]}}</span>
-       </button></h1>
-       {% else %}
-       <h1><button type="submit" class="btn btn-danger" value="{{data[0]}}" name="atopic">
+
+<div class="container">
+  <div class="jumbotron" style="background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)">
+
+    <h1><button type="submit" class="btn btn-danger btn-lg" value="Items that requires immediate attention" name="atopic">
+      Items that requires immediate attention </button></h1>
+    <hr class="my-4">
+    <p>A red colored badge signifies lower sentiment score compared to all
+    other hotels of the similar star rating.</p>
+    <form method="POST" action="topics_details">
+      <div class="row">
+      <div class="col-sm">
+      <div class="btn-group-vertical">
+        {% for data in data[:-1] %}
+        {% if data[1] < data[2] %}
+        <h1><button type="submit" class="btn btn-danger" value="{{data[0]}}" name="atopic">
           {{data[0]}} <span class="badge badge-light" >{{data[1]}}</span>
-       </button></h1>
-       {% endif %}
-       {% endfor %} -->
-      <!-- <span class="badge badge-primary">Primary</span>
-      <span class="badge badge-secondary">Secondary</span>
-      <span class="badge badge-success">Success</span>
-      <span class="badge badge-danger">Danger</span>
-      <span class="badge badge-warning">Warning</span>
-      <span class="badge badge-info">Info</span>
-      <span class="badge badge-light">Light</span>
-      <span class="badge badge-dark">Dark</span> -->
-    </form>
-  </div> <!-- /.container-->
+        </button></h1>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+     </div>
+   </form>
+</div>
+</div>
+
+<div class="container">
+  <div class="jumbotron" style="background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)">
+
+    <h1><button type="submit" class="btn btn-success btn-lg" value="Items that does not require immediate attention" name="atopic">
+      Items that does not require immediate attention</button></h1>
+    <hr class="my-4">
+    <p>A green colored badge signifies higher sentiment score compared to all
+    other hotels of the similar star rating.</p>
+    <form method="POST" action="topics_details">
+      <div class="row">
+      <div class="col-sm">
+      <div class="btn-group-vertical">
+        {% for data in data[:-1] %}
+        {% if data[1] > data[2] %}
+        <h1><button type="submit" class="btn btn-success" value="{{data[0]}}" name="atopic">
+          {{data[0]}} <span class="badge badge-light" >{{data[1]}}</span>
+        </button></h1>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+     </div>
+   </form>
+</div>
+</div>
+
 
 
    <!-- Bootstrap core JavaScript

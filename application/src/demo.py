@@ -1,3 +1,18 @@
+#############################################################
+#	Copyright (C) 2019  Argha Mondal
+#	This program is free software: you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation, either version 3 of the License, or
+#	any later version.
+#
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#############################################################
 import nltk
 import pandas as pd
 import numpy as np
@@ -7,34 +22,34 @@ import json
 
 import re
 import pickle
-# Gensim
-import gensim
-import gensim.corpora as corpora
-from gensim.utils import simple_preprocess
-from gensim.models import CoherenceModel
-from gensim.models import Phrases
-from gensim.corpora import Dictionary, MmCorpus
-from gensim.models.word2vec import LineSentence
-from gensim.models.ldamulticore import LdaMulticore
-# spacy for lemmatization
-import spacy
-# NLTK for text cleaning
-from nltk.tokenize import sent_tokenize, word_tokenize, RegexpTokenizer
-from nltk.classify import NaiveBayesClassifier
-from nltk.corpus import stopwords, names
-from nltk.tokenize import RegexpTokenizer
-from nltk import tokenize
-from nltk.corpus import stopwords
-from nltk.stem.porter import PorterStemmer
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-nltk.download('vader_lexicon')
-# TextBlob package for translation and spelling correction
-from textblob import TextBlob
-
-nlp = spacy.load('en')
-# Plotting tools
-import pyLDAvis
-import pyLDAvis.gensim  # don't skip this
+# # Gensim
+# import gensim
+# import gensim.corpora as corpora
+# from gensim.utils import simple_preprocess
+# from gensim.models import CoherenceModel
+# from gensim.models import Phrases
+# from gensim.corpora import Dictionary, MmCorpus
+# from gensim.models.word2vec import LineSentence
+# from gensim.models.ldamulticore import LdaMulticore
+# # spacy for lemmatization
+# import spacy
+# # NLTK for text cleaning
+# from nltk.tokenize import sent_tokenize, word_tokenize, RegexpTokenizer
+# from nltk.classify import NaiveBayesClassifier
+# from nltk.corpus import stopwords, names
+# from nltk.tokenize import RegexpTokenizer
+# from nltk import tokenize
+# from nltk.corpus import stopwords
+# from nltk.stem.porter import PorterStemmer
+# from nltk.sentiment.vader import SentimentIntensityAnalyzer
+# nltk.download('vader_lexicon')
+# # TextBlob package for translation and spelling correction
+# from textblob import TextBlob
+#
+# nlp = spacy.load('en')
+# # Plotting tools
+# import pyLDAvis
+# import pyLDAvis.gensim  # don't skip this
 import matplotlib.pyplot as plt
 # %matplotlib inline
 
@@ -218,7 +233,7 @@ mallet_lda_topics={
 #         else:
 #             topic_dict[mallet_lda_topics[int(atopic.replace('Topic_',''))]] = 'No information available'
 #     return topic_dict
-
+#
 # def demo_(hotel_name):
 #     new_doc = alldata[alldata['HotelName']==hotel_name]
 #     # print(new_doc.shape)
@@ -253,6 +268,7 @@ def score_compare(hotel_name, hotel_star):
                     topic_dict[mallet_lda_topics[int(atopic.replace('Topic_',''))]] = [myscore, othermean, 'Good']
                 else:
                     topic_dict[mallet_lda_topics[int(atopic.replace('Topic_',''))]] = [myscore, othermean, 'Bad']
+    topic_dict['Hotel_info'] = [hotel_name, str(int(hotel_star)+1), 'info']
     return [(str(key),topic_dict[key][0],topic_dict[key][1]) for key in topic_dict]
 
 
